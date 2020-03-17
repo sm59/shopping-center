@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Shopping Cart</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+   <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+   <section>
+      <div class="container">
+         <div class="cart">
+            <div class="title-style">
+               <h1>Shopping Center</h1>
+            </div>
+            <br>
+
+            <div class="payment-summary" id="summaryAmount">
+               <h3>You will be charged <b>$<span id="charged-amount" style="color: green;">00</span></b>Shopping Center</h3>
+               <br>
+               <br>
+
+               <a href="https://notnns.github.io/hablu-bank/index.html"><button type="button"
+                 class="btn btn-success bank-btn">Go to Bank</button></a>
+
+
+
+            </div>
+
+
+
+            <div id="to-be-hidden" class="col-md-12 col-lg-10 mx-auto">
+               <div class="cart-item" id="item-1">
+                  <div class="row">
+                     <div class="col-md-7 center-item">
+                        <img src="images/product-1.png" alt="">
+                        <h5>iPhone 11 128GB Black</h5>
+                        <div class="price-float"><b>Price: $1219</b></div>
+
+                     </div>
+
+
+
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <button class="btn btn-default" id="minus-button-1"><i class="fas fa-minus"></i></button>
+                           <input type="text" class="form-control text-center" value="0" id="quantity-box-1">
+                           <button class="btn btn-default" id="plus-button-1"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <h5>$<span id="item-1-updated-price">0</span></h5>
+                        <input type="text" id="price-1" class="form-control text-center hide-this" value="1219">
+                        <a href="#"><img src="images/remove.png" alt="" class="remove-item" id="removed1"></a>
+
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item" id="item-2">
+                  <div class="row">
+                     <div class="col-md-7 center-item mx-auto">
+                        <img src="images/product-2.png" alt="">
+                        <h5>iPhone 11 Silicone Case - Black</h5>
+                        <div class="price-float"><b>Price: $59</b></div>
+                     </div>
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <button class="btn btn-default" id="minus-button-2"><i class="fas fa-minus"></i></button>
+                           <input type="text" class="form-control text-center" value="0" id="quantity-box-2">
+                           <button class="btn btn-default" id="plus-button-2"><i class="fas fa-plus"></i></button>
+
+                        </div>
+                        <h5>$<span id="item-2-updated-price">0</span></h5>
+                        <input type="text" id="price-2" class="form-control text-center hide-this" value="59">
+
+                        <a href="#"><img src="images/remove.png" alt="" class="remove-item" id="removed2"></a>
+                     </div>
+                  </div>
+               </div>
+
+
+               <div class="cart-item">
+                  <div class="row">
+
+                     <div class="col-md-8">
+                        <h5>Subtotal: </h5>
+                        <h5>Tax: (<span id="tax-rate">15</span>%)</h5>
+                        <h5>Total:</h5>
+                     </div>
+
+                     <div class="col-md-4 status">
+                        <h5><span id="sub-total-text">0</span></h5>
+                        <h5>$<span id="tax-text">0</span></h5>
+                        <h5>$<span id="grand-total-text">0</span></h5>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 pt-4 pb-4">
+                  <button id="check-out-clicked" type="button" class="btn btn-success check-out">Check Out</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+
+   <script>
+
+
+
+      function itemRemove(removeButton, itemID, priceRemove) {
+         const removeThis = document.getElementById(removeButton);
+         removeThis.addEventListener("click", function () {
+            const itemArea = document.getElementById(itemID);
+            itemArea.style.display = "none";
+
+            const removedPrice = parseFloat(document.getElementById(priceRemove).innerText);
+            const subTotalPriceNum = parseFloat(document.getElementById("sub-total-text").innerText) - removedPrice;
+            const taxPercentage = parseFloat(document.getElementById("tax-rate").innerText);
+            const taxNum = subTotalPriceNum * taxPercentage / 100;
+
+            const gtNum = subTotalPriceNum + taxNum;
+
+            document.getElementById("sub-total-text").innerText = subTotalPriceNum;
+            document.getElementById("tax-text").innerText = taxNum;
+            document.getElementById("grand-total-text").innerText = gtNum;
+            document.getElementById(priceRemove).innerText = 0;
+
+
+         });
+      }
+
+      itemRemove("removed1", "item-1", "item-1-updated-price");
+      itemRemove("removed2", "item-2", "item-2-updated-price");
+
+
+
+
+      function plusButtonAction(plusButton, itemQuantity, itemPrice, changedPrice) {
+         document.getElementById(plusButton).addEventListener("click", function () {
+
+            if (parseFloat(document.getElementById(itemQuantity).value) < 0) { }
+
+            else {
+
+               const updatedAmount = parseFloat(document.getElementById(itemQuantity).value) + 1;
+               document.getElementById(itemQuantity).value = updatedAmount;
+
+               const priceNum = parseFloat(document.getElementById(itemPrice).value);
+               const updatedPrice = priceNum * updatedAmount;
+               document.getElementById(changedPrice).innerText = updatedPrice;
+
+
+               const subTotalPriceNum = parseFloat(document.getElementById("item-1-updated-price").innerText) + parseFloat(document.getElementById("item-2-updated-price").innerText);
+               const taxPercentage = parseFloat(document.getElementById("tax-rate").innerText);
+               const taxNum = subTotalPriceNum * taxPercentage / 100;
+
+               const gtNum = subTotalPriceNum + taxNum;
+
+               document.getElementById("sub-total-text").innerText = subTotalPriceNum;
+               document.getElementById("tax-text").innerText = taxNum;
+               document.getElementById("grand-total-text").innerText = gtNum;
+            }
+
+
+
+         });
+      }
+
+      plusButtonAction("plus-button-1", "quantity-box-1", "price-1", "item-1-updated-price");
+      plusButtonAction("plus-button-2", "quantity-box-2", "price-2", "item-2-updated-price");
+
+
+
+
+
+      function minusButtonAction(minusButton, itemQuantity, itemPrice, changedPrice) {
+         document.getElementById(minusButton).addEventListener("click", function () {
+
+
+            if (parseFloat(document.getElementById(itemQuantity).value) >= 1) {
+               const updatedAmount = parseFloat(document.getElementById(itemQuantity).value) - 1;
+               document.getElementById(itemQuantity).value = updatedAmount;
+
+               const priceNum = parseFloat(document.getElementById(itemPrice).value);
+               const updatedPrice = priceNum * updatedAmount;
+               document.getElementById(changedPrice).innerText = updatedPrice;
+
+
+               const subTotalPriceNum = parseFloat(document.getElementById("item-1-updated-price").innerText) + parseFloat(document.getElementById("item-2-updated-price").innerText);
+               const taxPercentage = parseFloat(document.getElementById("tax-rate").innerText);
+               const taxNum = subTotalPriceNum * taxPercentage / 100;
+
+               const gtNum = subTotalPriceNum + taxNum;
+
+               document.getElementById("sub-total-text").innerText = subTotalPriceNum;
+               document.getElementById("tax-text").innerText = taxNum;
+               document.getElementById("grand-total-text").innerText = gtNum;
+
+
+
+            }
+
+         });
+      }
+
+      minusButtonAction("minus-button-1", "quantity-box-1", "price-1", "item-1-updated-price");
+      minusButtonAction("minus-button-2", "quantity-box-2", "price-2", "item-2-updated-price");
+
+
+
+      document.getElementById("quantity-box-1").value = 0;
+      document.getElementById("quantity-box-2").value = 0;
+
+      document.getElementById("check-out-clicked").addEventListener("click", function () {
+         document.getElementById("to-be-hidden").style.display = "none";
+         document.getElementById("charged-amount").innerText = document.getElementById("grand-total-text").innerText;
+         document.getElementById("summaryAmount").style.display = "block";
+         console.log("Checkout Clicked");
+      });
+
+
+      function getAutoFromQuantityBox(itemQuantity, itemPrice, changedPrice) {
+         document.getElementById(itemQuantity).addEventListener("change", function () {
+
+            const updatedAmount = parseFloat(document.getElementById(itemQuantity).value);
+
+            if (updatedAmount >= 0) {
+               const priceNum = parseFloat(document.getElementById(itemPrice).value);
+               const updatedPrice = priceNum * updatedAmount;
+               document.getElementById(changedPrice).innerText = updatedPrice;
+
+               const subTotalPriceNum = parseFloat(document.getElementById("item-1-updated-price").innerText) + parseFloat(document.getElementById("item-2-updated-price").innerText);
+               const taxPercentage = parseFloat(document.getElementById("tax-rate").innerText);
+               const taxNum = subTotalPriceNum * taxPercentage / 100;
+               const gtNum = subTotalPriceNum + taxNum;
+
+               document.getElementById("sub-total-text").innerText = subTotalPriceNum;
+               document.getElementById("tax-text").innerText = taxNum;
+               document.getElementById("grand-total-text").innerText = gtNum;
+            }
+         });
+      }
+      getAutoFromQuantityBox("quantity-box-1", "price-1", "item-1-updated-price");
+      getAutoFromQuantityBox("quantity-box-2", "price-2", "item-2-updated-price");
+   </script>
+</body>
+
+</html>
